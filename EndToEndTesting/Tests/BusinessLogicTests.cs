@@ -61,6 +61,7 @@ namespace EndToEndTesting.Tests
             Assert.That(_inventoryPage.GetCartItemCount(), Is.EqualTo(1));
             
             _sideMenuPage.OpenMenu();
+            _sideMenuPage.ResetAppState();
             _sideMenuPage.Logout();
 
             // User B logs in

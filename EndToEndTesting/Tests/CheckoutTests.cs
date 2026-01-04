@@ -18,6 +18,8 @@ namespace EndToEndTesting.Tests
             Driver.Navigate().GoToUrl(Constants.BaseUrl);
             _loginPage = new LoginPage(Driver);
             _loginPage.Login(Constants.Users.StandardUser, Constants.Users.SecretSauce);
+            _inventoryPage = new InventoryPage(Driver);
+            _inventoryPage.AddItemToCart(Constants.Products.Backpack);
             _inventoryPage.GoToCart();
             
             _cartPage = new CartPage(Driver);
