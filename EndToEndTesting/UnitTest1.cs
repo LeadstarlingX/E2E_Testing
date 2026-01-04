@@ -4,7 +4,7 @@ using System.Runtime.Intrinsics.X86;
 
 namespace EndToEndTesting
 {
-    public class Tests
+    public class LegacyTests
     {
         
 
