@@ -16,6 +16,7 @@ namespace EndToEndTesting.Pages
 
         private IWebElement SortDropdown => Driver.FindElement(By.ClassName("product_sort_container"));
         private IReadOnlyCollection<IWebElement> InventoryItems => Driver.FindElements(By.ClassName("inventory_item"));
+        private IReadOnlyCollection<IWebElement> InventoryImages => Driver.FindElements(By.CssSelector(".inventory_item_img img"));
         private IWebElement CartBadge => Driver.FindElement(By.ClassName("shopping_cart_badge"));
         private IWebElement CartLink => Driver.FindElement(By.ClassName("shopping_cart_link"));
 
@@ -60,6 +61,20 @@ namespace EndToEndTesting.Pages
         public bool IsItemDisplayed(string itemName)
         {
             return InventoryItems.Any(item => item.Text.Contains(itemName));
+        }
+
+        public void ClickProductTitle(string itemName)
+        {
+            // ID pattern: item_[ID]_title_link
+            // But we can find by text within inventory_item_name
+            var item = InventoryItems.First(i => i.Text.Contains(itemName));
+            item.FindElement(By.ClassName("inventory_item_name")).Click();
+            Wait();
+        }
+
+        public System.Collections.Generic.IEnumerable<string> GetInventoryImageSources()
+        {
+            return InventoryImages.Select(img => img.GetAttribute("src"));
         }
     }
 }
