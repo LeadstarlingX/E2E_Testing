@@ -17,6 +17,14 @@ namespace EndToEndTesting.Tests
             options.AddAdditionalChromeOption("useAutomationExtension", false);
             options.AddArgument("--disable-blink-features=AutomationControlled");
             options.AddArgument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36");
+            options.AddUserProfilePreference("credentials_enable_service", false);
+            options.AddUserProfilePreference("profile.password_manager_enabled", false);
+            options.AddUserProfilePreference("profile.password_manager_leak_detection", false);
+            options.AddUserProfilePreference("safebrowsing.enabled", true); // Keep enabled generally but specific warnings off
+            options.AddArgument("--disable-popup-blocking");
+            options.AddArgument("--disable-notifications");
+
+
 
             // Uncomment usage of headless mode for CI if needed
             // options.AddArgument("--headless"); 
