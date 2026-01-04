@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using EndToEndTesting.Pages;
 using OpenQA.Selenium;
+using EndToEndTesting.Data;
 
 namespace EndToEndTesting.Tests
 {
@@ -17,7 +18,7 @@ namespace EndToEndTesting.Tests
         [SetUp]
         public void LocalSetup()
         {
-            Driver.Navigate().GoToUrl("https://www.saucedemo.com/");
+            Driver.Navigate().GoToUrl(Constants.BaseUrl);
             _loginPage = new LoginPage(Driver);
             _inventoryPage = new InventoryPage(Driver);
             _detailsPage = new ProductDetailsPage(Driver);
@@ -25,25 +26,25 @@ namespace EndToEndTesting.Tests
             _checkoutPage = new CheckoutPage(Driver);
             _sideMenuPage = new SideMenuPage(Driver);
             
-            _loginPage.Login("standard_user", "secret_sauce");
+            _loginPage.Login(Constants.Users.StandardUser, Constants.Users.SecretSauce);
         }
 
         [Test]
         public void TestFullLifecycle_MultiItemManagement()
         {
             // Add items from inventory
-            _inventoryPage.AddItemToCart("Sauce Labs Backpack");
-            _inventoryPage.AddItemToCart("Sauce Labs Bike Light");
+            _inventoryPage.AddItemToCart(Constants.Products.Backpack);
+            _inventoryPage.AddItemToCart(Constants.Products.BikeLight);
             Assert.That(_inventoryPage.GetCartItemCount(), Is.EqualTo(2));
 
             // Add item from details
-            _inventoryPage.ClickProductTitle("Sauce Labs Bolt T-Shirt");
+            _inventoryPage.ClickProductTitle(Constants.Products.BoltTShirt);
             _detailsPage.AddToCart();
             Assert.That(_inventoryPage.GetCartItemCount(), Is.EqualTo(3));
 
             // Remove item from cart
             _inventoryPage.GoToCart();
-            Assert.That(_cartPage.HasItem("Sauce Labs Backpack"), Is.True);
+            Assert.That(_cartPage.HasItem(Constants.Products.Backpack), Is.True);
             Driver.FindElement(By.Id("remove-sauce-labs-backpack")).Click();
             System.Threading.Thread.Sleep(500); 
             
@@ -55,8 +56,8 @@ namespace EndToEndTesting.Tests
             
             // Step 2 summary
             Assert.That(Driver.Url, Does.Contain("checkout-step-two.html"));
-            Assert.That(Driver.PageSource, Does.Contain("Sauce Labs Bike Light"));
-            Assert.That(Driver.PageSource, Does.Contain("Sauce Labs Bolt T-Shirt"));
+            Assert.That(Driver.PageSource, Does.Contain(Constants.Products.BikeLight));
+            Assert.That(Driver.PageSource, Does.Contain(Constants.Products.BoltTShirt));
             
             _checkoutPage.FinishCheckout();
             Assert.That(_checkoutPage.GetCompleteMessage(), Is.EqualTo("Thank you for your order!"));
@@ -67,13 +68,13 @@ namespace EndToEndTesting.Tests
             Assert.That(_inventoryPage.GetCartItemCount(), Is.EqualTo(0));
             
             _sideMenuPage.Logout();
-            Assert.That(Driver.Url, Is.EqualTo("https://www.saucedemo.com/"));
+            Assert.That(Driver.Url, Is.EqualTo(Constants.BaseUrl));
         }
 
         [Test]
         public void TestCheckout_ValidationAndCancel()
         {
-            _inventoryPage.AddItemToCart("Sauce Labs Onesie");
+            _inventoryPage.AddItemToCart(Constants.Products.Onesie);
             _inventoryPage.GoToCart();
             _cartPage.Checkout();
 

@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using EndToEndTesting.Pages;
+using EndToEndTesting.Data;
 
 namespace EndToEndTesting.Tests
 {
@@ -13,9 +14,9 @@ namespace EndToEndTesting.Tests
         [SetUp]
         public void DataSetup()
         {
-            Driver.Navigate().GoToUrl("https://www.saucedemo.com/");
+            Driver.Navigate().GoToUrl(Constants.BaseUrl);
             _loginPage = new LoginPage(Driver);
-            _loginPage.Login("standard_user", "secret_sauce");
+            _loginPage.Login(Constants.Users.StandardUser, Constants.Users.SecretSauce);
             _inventoryPage = new InventoryPage(Driver);
             _detailsPage = new ProductDetailsPage(Driver);
         }
@@ -23,18 +24,18 @@ namespace EndToEndTesting.Tests
         [Test]
         public void TestProductDetailsContent()
         {
-            string itemName = "Sauce Labs Backpack";
+            string itemName = Constants.Products.Backpack;
             _inventoryPage.ClickProductTitle(itemName);
             
             Assert.That(_detailsPage.GetItemName(), Is.EqualTo(itemName));
             Assert.That(_detailsPage.GetItemDescription(), Is.Not.Empty);
-            Assert.That(_detailsPage.GetItemPrice(), Is.EqualTo("$29.99"));
+            Assert.That(_detailsPage.GetItemPrice(), Is.EqualTo("$" + Constants.Prices.Backpack.ToString("F2")));
         }
 
         [Test]
         public void TestAddToCartFromDetails()
         {
-            _inventoryPage.ClickProductTitle("Sauce Labs Bike Light");
+            _inventoryPage.ClickProductTitle(Constants.Products.BikeLight);
             _detailsPage.AddToCart();
             
             Assert.That(_inventoryPage.GetCartItemCount(), Is.EqualTo(1));
@@ -43,7 +44,7 @@ namespace EndToEndTesting.Tests
         [Test]
         public void TestBackToProducts()
         {
-            _inventoryPage.ClickProductTitle("Sauce Labs Bolt T-Shirt");
+            _inventoryPage.ClickProductTitle(Constants.Products.BoltTShirt);
             _detailsPage.BackToProducts();
             
             Assert.That(Driver.Url, Does.Contain("inventory.html"));

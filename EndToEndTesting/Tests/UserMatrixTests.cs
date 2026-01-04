@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using EndToEndTesting.Pages;
 using System.Linq;
+using EndToEndTesting.Data;
 
 namespace EndToEndTesting.Tests
 {
@@ -15,7 +16,7 @@ namespace EndToEndTesting.Tests
         [SetUp]
         public void LocalSetup()
         {
-            Driver.Navigate().GoToUrl("https://www.saucedemo.com/");
+            Driver.Navigate().GoToUrl(Constants.BaseUrl);
             _loginPage = new LoginPage(Driver);
             _inventoryPage = new InventoryPage(Driver);
             _cartPage = new CartPage(Driver);
@@ -25,8 +26,8 @@ namespace EndToEndTesting.Tests
         [Test]
         public void TestStandardUser_FullFlow()
         {
-            _loginPage.Login("standard_user", "secret_sauce");
-            _inventoryPage.AddItemToCart("Sauce Labs Backpack");
+            _loginPage.Login(Constants.Users.StandardUser, Constants.Users.SecretSauce);
+            _inventoryPage.AddItemToCart(Constants.Products.Backpack);
             _inventoryPage.GoToCart();
             _cartPage.Checkout();
             _checkoutPage.EnterShippingDetails("John", "Doe", "12345");
@@ -40,12 +41,12 @@ namespace EndToEndTesting.Tests
         public void TestPerformanceGlitchUser_CheckoutCompletes()
         {
             // Verify glitch user handled by wait
-            _loginPage.Login("performance_glitch_user", "secret_sauce");
+            _loginPage.Login(Constants.Users.PerformanceGlitchUser, Constants.Users.SecretSauce);
             
             // Should be on inventory page after (delayed) login
             Assert.That(Driver.Url, Does.Contain("inventory.html"));
             
-            _inventoryPage.AddItemToCart("Sauce Labs Backpack");
+            _inventoryPage.AddItemToCart(Constants.Products.Backpack);
             _inventoryPage.GoToCart();
             _cartPage.Checkout();
             _checkoutPage.EnterShippingDetails("Test", "User", "00000");
@@ -58,7 +59,7 @@ namespace EndToEndTesting.Tests
         [Test]
         public void TestLockedOutUser_DetectErrorMessage()
         {
-            _loginPage.Login("locked_out_user", "secret_sauce");
+            _loginPage.Login(Constants.Users.LockedOutUser, Constants.Users.SecretSauce);
             string error = _loginPage.GetErrorMessage();
             Assert.That(error, Does.Contain("Sorry, this user has been locked out."));
         }

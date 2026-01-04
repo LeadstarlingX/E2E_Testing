@@ -1,6 +1,7 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System.Linq;
+using EndToEndTesting.Data;
 
 namespace EndToEndTesting.Pages
 {
@@ -10,7 +11,7 @@ namespace EndToEndTesting.Pages
 
         public CartPage(IWebDriver driver) : base(driver)
         {
-            _wait = new WebDriverWait(Driver, System.TimeSpan.FromSeconds(10));
+            _wait = new WebDriverWait(Driver, System.TimeSpan.FromSeconds(Constants.ExplicitWaitTimeout));
         }
 
         private IWebElement CheckoutButton => Driver.FindElement(By.Id("checkout"));

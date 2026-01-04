@@ -1,5 +1,6 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using EndToEndTesting.Data;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,7 +12,7 @@ namespace EndToEndTesting.Pages
 
         public InventoryPage(IWebDriver driver) : base(driver)
         {
-            _wait = new WebDriverWait(Driver, System.TimeSpan.FromSeconds(10));
+            _wait = new WebDriverWait(Driver, System.TimeSpan.FromSeconds(Constants.ExplicitWaitTimeout));
         }
 
         private IWebElement SortDropdown => Driver.FindElement(By.ClassName("product_sort_container"));

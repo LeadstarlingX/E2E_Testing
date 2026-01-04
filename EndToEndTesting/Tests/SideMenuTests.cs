@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using EndToEndTesting.Pages;
 using OpenQA.Selenium;
+using EndToEndTesting.Data;
 
 namespace EndToEndTesting.Tests
 {
@@ -14,9 +15,9 @@ namespace EndToEndTesting.Tests
         [SetUp]
         public void DataSetup()
         {
-            Driver.Navigate().GoToUrl("https://www.saucedemo.com/");
+            Driver.Navigate().GoToUrl(Constants.BaseUrl);
             _loginPage = new LoginPage(Driver);
-            _loginPage.Login("standard_user", "secret_sauce");
+            _loginPage.Login(Constants.Users.StandardUser, Constants.Users.SecretSauce);
             _inventoryPage = new InventoryPage(Driver);
             _sideMenuPage = new SideMenuPage(Driver);
         }
@@ -27,15 +28,14 @@ namespace EndToEndTesting.Tests
             _sideMenuPage.OpenMenu();
             _sideMenuPage.Logout();
             
-            Assert.That(Driver.Url, Is.EqualTo("https://www.saucedemo.com/"));
+            Assert.That(Driver.Url, Is.EqualTo(Constants.BaseUrl));
             Assert.That(Driver.FindElements(By.Id("login-button")).Count, Is.GreaterThan(0));
         }
 
         [Test]
         public void TestResetAppState()
         {
-            // Add item to reset
-            _inventoryPage.AddItemToCart("Sauce Labs Backpack");
+            _inventoryPage.AddItemToCart(Constants.Products.Backpack);
             Assert.That(_inventoryPage.GetCartItemCount(), Is.EqualTo(1));
             
             _sideMenuPage.OpenMenu();

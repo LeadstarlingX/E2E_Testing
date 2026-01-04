@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using EndToEndTesting.Pages;
+using EndToEndTesting.Data;
 
 namespace EndToEndTesting.Tests
 {
@@ -9,9 +10,9 @@ namespace EndToEndTesting.Tests
         [Test]
         public void TestLogin_StandardUser_Success()
         {
-            Driver.Navigate().GoToUrl("https://www.saucedemo.com/");
+            Driver.Navigate().GoToUrl(Constants.BaseUrl);
             var loginPage = new LoginPage(Driver);
-            loginPage.Login("standard_user", "secret_sauce");
+            loginPage.Login(Constants.Users.StandardUser, Constants.Users.SecretSauce);
             
             // Verify login success
             Assert.That(Driver.Url, Does.Contain("inventory.html"));
@@ -20,9 +21,9 @@ namespace EndToEndTesting.Tests
         [Test]
         public void TestLogin_LockedOutUser_Failure()
         {
-            Driver.Navigate().GoToUrl("https://www.saucedemo.com/");
+            Driver.Navigate().GoToUrl(Constants.BaseUrl);
             var loginPage = new LoginPage(Driver);
-            loginPage.Login("locked_out_user", "secret_sauce");
+            loginPage.Login(Constants.Users.LockedOutUser, Constants.Users.SecretSauce);
             
             Assert.That(loginPage.GetErrorMessage(), Does.Contain("locked out"));
         }

@@ -1,8 +1,8 @@
-using NUnit.Framework;
-using EndToEndTesting.Pages;
 using OpenQA.Selenium;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using EndToEndTesting.Data;
+using EndToEndTesting.Pages;
 
 namespace EndToEndTesting.Tests
 {
@@ -18,7 +18,7 @@ namespace EndToEndTesting.Tests
         [SetUp]
         public void LocalSetup()
         {
-            Driver.Navigate().GoToUrl("https://www.saucedemo.com/");
+            Driver.Navigate().GoToUrl(Constants.BaseUrl);
             _loginPage = new LoginPage(Driver);
             _inventoryPage = new InventoryPage(Driver);
             _cartPage = new CartPage(Driver);
@@ -29,11 +29,11 @@ namespace EndToEndTesting.Tests
         [Test]
         public void TestCheckout_MathValidation()
         {
-            _loginPage.Login("standard_user", "secret_sauce");
+            _loginPage.Login(Constants.Users.StandardUser, Constants.Users.SecretSauce);
             
             // Add items
-            _inventoryPage.AddItemToCart("Sauce Labs Backpack"); // $29.99
-            _inventoryPage.AddItemToCart("Sauce Labs Bike Light"); // $9.99
+            _inventoryPage.AddItemToCart(Constants.Products.Backpack); // $29.99
+            _inventoryPage.AddItemToCart(Constants.Products.BikeLight); // $9.99
             
             _inventoryPage.GoToCart();
             _cartPage.Checkout();
@@ -48,7 +48,7 @@ namespace EndToEndTesting.Tests
             double tax = ExtractPrice(taxText);
             double total = ExtractPrice(totalText);
 
-            Assert.That(subtotal, Is.EqualTo(39.98).Within(0.01), "Subtotal should be the sum of 29.99 and 9.99");
+            Assert.That(subtotal, Is.EqualTo(Constants.Prices.Backpack + Constants.Prices.BikeLight).Within(0.01), "Subtotal should be specific sum");
             Assert.That(subtotal + tax, Is.EqualTo(total).Within(0.01), "Subtotal + Tax should equal Total");
         }
 
@@ -56,15 +56,15 @@ namespace EndToEndTesting.Tests
         public void TestSession_Isolation()
         {
             // User A adds item
-            _loginPage.Login("standard_user", "secret_sauce");
-            _inventoryPage.AddItemToCart("Sauce Labs Onesie");
+            _loginPage.Login(Constants.Users.StandardUser, Constants.Users.SecretSauce);
+            _inventoryPage.AddItemToCart(Constants.Products.Onesie);
             Assert.That(_inventoryPage.GetCartItemCount(), Is.EqualTo(1));
             
             _sideMenuPage.OpenMenu();
             _sideMenuPage.Logout();
 
             // User B logs in
-            _loginPage.Login("performance_glitch_user", "secret_sauce");
+            _loginPage.Login(Constants.Users.PerformanceGlitchUser, Constants.Users.SecretSauce);
             
             // Verify session isolation
             Assert.That(_inventoryPage.GetCartItemCount(), Is.EqualTo(0), "New user should not see items from previous user's session.");

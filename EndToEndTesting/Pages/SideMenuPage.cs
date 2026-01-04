@@ -1,3 +1,4 @@
+using EndToEndTesting.Data;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
@@ -10,7 +11,7 @@ namespace EndToEndTesting.Pages
 
         public SideMenuPage(IWebDriver driver) : base(driver)
         {
-            _wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(10));
+            _wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(Constants.ExplicitWaitTimeout));
         }
 
         private IWebElement BurgerMenuButton => Driver.FindElement(By.Id("react-burger-menu-btn"));

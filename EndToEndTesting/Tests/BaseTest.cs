@@ -2,6 +2,7 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
+using EndToEndTesting.Data;
 
 namespace EndToEndTesting.Tests
 {
@@ -26,7 +27,7 @@ namespace EndToEndTesting.Tests
 
 
             Driver = new ChromeDriver(options);
-            Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+            Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(Constants.ImplicitWaitTimeout);
             Driver.Manage().Window.Maximize();
         }
 
