@@ -2,35 +2,35 @@ using OpenQA.Selenium;
 
 namespace EndToEndTesting.Pages
 {
-    public class LoginPage
+    public class LoginPage : BasePage
     {
-        private readonly IWebDriver _driver;
-
-        public LoginPage(IWebDriver driver)
+        public LoginPage(IWebDriver driver) : base(driver)
         {
-            _driver = driver;
         }
 
-        private IWebElement UsernameField => _driver.FindElement(By.Id("user-name"));
-        private IWebElement PasswordField => _driver.FindElement(By.Id("password"));
-        private IWebElement LoginButton => _driver.FindElement(By.Id("login-button"));
-        private IWebElement ErrorMessage => _driver.FindElement(By.ClassName("error-message-container"));
+        private IWebElement UsernameField => Driver.FindElement(By.Id("user-name"));
+        private IWebElement PasswordField => Driver.FindElement(By.Id("password"));
+        private IWebElement LoginButton => Driver.FindElement(By.Id("login-button"));
+        private IWebElement ErrorMessage => Driver.FindElement(By.ClassName("error-message-container"));
 
         public void EnterUsername(string username)
         {
             UsernameField.Clear();
             UsernameField.SendKeys(username);
+            Wait();
         }
 
         public void EnterPassword(string password)
         {
             PasswordField.Clear();
             PasswordField.SendKeys(password);
+            Wait();
         }
 
         public void ClickLogin()
         {
             LoginButton.Click();
+            Wait();
         }
 
         public void Login(string username, string password)

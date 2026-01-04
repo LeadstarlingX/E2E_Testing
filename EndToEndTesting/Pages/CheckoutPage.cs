@@ -2,34 +2,36 @@ using OpenQA.Selenium;
 
 namespace EndToEndTesting.Pages
 {
-    public class CheckoutPage
+    public class CheckoutPage : BasePage
     {
-        private readonly IWebDriver _driver;
-
-        public CheckoutPage(IWebDriver driver)
+        public CheckoutPage(IWebDriver driver) : base(driver)
         {
-            _driver = driver;
         }
 
-        private IWebElement FirstNameField => _driver.FindElement(By.Id("first-name"));
-        private IWebElement LastNameField => _driver.FindElement(By.Id("last-name"));
-        private IWebElement PostalCodeField => _driver.FindElement(By.Id("postal-code"));
-        private IWebElement ContinueButton => _driver.FindElement(By.Id("continue"));
-        private IWebElement FinishButton => _driver.FindElement(By.Id("finish"));
-        private IWebElement CompleteHeader => _driver.FindElement(By.ClassName("complete-header"));
-        private IWebElement BackHomeButton => _driver.FindElement(By.Id("back-to-products"));
+        private IWebElement FirstNameField => Driver.FindElement(By.Id("first-name"));
+        private IWebElement LastNameField => Driver.FindElement(By.Id("last-name"));
+        private IWebElement PostalCodeField => Driver.FindElement(By.Id("postal-code"));
+        private IWebElement ContinueButton => Driver.FindElement(By.Id("continue"));
+        private IWebElement FinishButton => Driver.FindElement(By.Id("finish"));
+        private IWebElement CompleteHeader => Driver.FindElement(By.ClassName("complete-header"));
+        private IWebElement BackHomeButton => Driver.FindElement(By.Id("back-to-products"));
 
         public void EnterShippingDetails(string firstName, string lastName, string zip)
         {
             FirstNameField.SendKeys(firstName);
+            Wait();
             LastNameField.SendKeys(lastName);
+            Wait();
             PostalCodeField.SendKeys(zip);
+            Wait();
             ContinueButton.Click();
+            Wait();
         }
 
         public void FinishCheckout()
         {
             FinishButton.Click();
+            Wait();
         }
 
         public string GetCompleteMessage()
@@ -40,6 +42,7 @@ namespace EndToEndTesting.Pages
         public void BackHome()
         {
             BackHomeButton.Click();
+            Wait();
         }
     }
 }
