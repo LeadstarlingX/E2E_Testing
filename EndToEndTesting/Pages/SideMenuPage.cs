@@ -22,7 +22,7 @@ namespace EndToEndTesting.Pages
         public void OpenMenu()
         {
             BurgerMenuButton.Click();
-            // Wait for menu to be visible/clickable
+            // Wait for menu visibility
             _wait.Until(d => LogoutLink.Displayed);
             Wait();
         }

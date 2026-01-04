@@ -29,13 +29,12 @@ namespace EndToEndTesting.Pages
 
         public void AddItemToCart(string itemName)
         {
-            // Finding layout-safe button ID based on item name convention of sauce demo
-            // e.g. "Sauce Labs Backpack" -> "add-to-cart-sauce-labs-backpack"
+            // Find button by item name convention (e.g. "Sauce Labs Backpack" -> "add-to-cart-sauce-labs-backpack")
             string itemId = "add-to-cart-" + itemName.ToLower().Replace(" ", "-");
             Driver.FindElement(By.Id(itemId)).Click();
             Wait();
             
-            // Wait for badge to update or appear
+            // Wait for badge update
             _wait.Until(d => d.FindElements(By.ClassName("shopping_cart_badge")).Count > 0);
         }
 
@@ -65,8 +64,7 @@ namespace EndToEndTesting.Pages
 
         public void ClickProductTitle(string itemName)
         {
-            // ID pattern: item_[ID]_title_link
-            // But we can find by text within inventory_item_name
+            // Click item name link
             var item = InventoryItems.First(i => i.Text.Contains(itemName));
             item.FindElement(By.ClassName("inventory_item_name")).Click();
             Wait();

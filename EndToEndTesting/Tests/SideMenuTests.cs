@@ -34,14 +34,14 @@ namespace EndToEndTesting.Tests
         [Test]
         public void TestResetAppState()
         {
-            // Add an item to verify reset
+            // Add item to reset
             _inventoryPage.AddItemToCart("Sauce Labs Backpack");
             Assert.That(_inventoryPage.GetCartItemCount(), Is.EqualTo(1));
             
             _sideMenuPage.OpenMenu();
             _sideMenuPage.ResetAppState();
             
-            // Verify cart is empty after reset
+            // Verify reset success
             Assert.That(_inventoryPage.GetCartItemCount(), Is.EqualTo(0));
         }
     }

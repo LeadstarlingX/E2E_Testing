@@ -39,7 +39,7 @@ namespace EndToEndTesting.Tests
         [Test]
         public void TestPerformanceGlitchUser_CheckoutCompletes()
         {
-            // This test verifies that our WebDriverWait handles the 5s delay of the glitch user
+            // Verify glitch user handled by wait
             _loginPage.Login("performance_glitch_user", "secret_sauce");
             
             // Should be on inventory page after (delayed) login

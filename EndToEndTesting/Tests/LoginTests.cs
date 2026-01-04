@@ -13,7 +13,7 @@ namespace EndToEndTesting.Tests
             var loginPage = new LoginPage(Driver);
             loginPage.Login("standard_user", "secret_sauce");
             
-            // Verify we are on inventory page
+            // Verify login success
             Assert.That(Driver.Url, Does.Contain("inventory.html"));
         }
 

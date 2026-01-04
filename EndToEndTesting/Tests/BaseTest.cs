@@ -20,14 +20,10 @@ namespace EndToEndTesting.Tests
             options.AddUserProfilePreference("credentials_enable_service", false);
             options.AddUserProfilePreference("profile.password_manager_enabled", false);
             options.AddUserProfilePreference("profile.password_manager_leak_detection", false);
-            options.AddUserProfilePreference("safebrowsing.enabled", true); // Keep enabled generally but specific warnings off
+            options.AddUserProfilePreference("safebrowsing.enabled", true); 
             options.AddArgument("--disable-popup-blocking");
             options.AddArgument("--disable-notifications");
 
-
-
-            // Uncomment usage of headless mode for CI if needed
-            // options.AddArgument("--headless"); 
 
             Driver = new ChromeDriver(options);
             Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
@@ -44,7 +40,7 @@ namespace EndToEndTesting.Tests
             }
             catch (Exception)
             {
-                // Ignore errors during teardown
+                // Ignore teardown errors
             }
         }
     }
